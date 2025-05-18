@@ -1,8 +1,8 @@
 # WGFMUpy
 
 ## How to use the package
-1) `import wgfmu_library`
-2) instantiate `WGFMU = WGFMU_class()`
+1) `import WGFMUpy`
+2) instantiate `WGFMU = WGFMUpy.WGFMU_class()`
 3) use the functions from the _wgfmu.dll_ as `return_values=WGFMU.functionName(input_parameters)`.
 The original functions from the library use variable pointers to pass the values, the python version of the function returns the values.
 The python functions use python variable types for the inputs and return values, the conversion is handled internally.
