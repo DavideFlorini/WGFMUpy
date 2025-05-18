@@ -1,14 +1,30 @@
 import ctypes
 import numpy as np
+import pkg_resources
+import os
 
-class WGFMU_class:
-    def __init__(self, library_path='C:/Windows/System32/wgfmu.dll'):
+
+class WGFMU_class():
+    def __init__(self, library_path=None):
+        if library_path is None:
+            try:
+                self.library_path = pkg_resources.resource_filename('WGFMUpy', 'libs/wgfmu.dll')
+            except ImportError:
+                # pkg_resources might not be available in some environments
+                self.library_path = os.path.join(os.path.dirname(__file__), 'libs', 'wgfmu.dll')
+                print(f"Warning: pkg_resources not available, using relative path: {self.library_path}")
+            except FileNotFoundError:
+                raise FileNotFoundError("Default WGFMU library not found in the package.")
+        else:
+            self.library_path = library_path
+
+        print(f"Attempting to load library from: {self.library_path}")
         try:
-            self._lib = ctypes.WinDLL(library_path)
+            self._lib = ctypes.WinDLL(self.library_path)
             self._define_argtypes_restypes()
         except OSError as e:
             self._lib = None
-            raise OSError(f"Error loading WGFMU library from {library_path}: {e}")
+            raise OSError(f"Error loading WGFMU library from {self.library_path}: {e}")
 
     # Functions
 
