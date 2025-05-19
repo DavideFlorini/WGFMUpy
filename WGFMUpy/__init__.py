@@ -40,7 +40,7 @@ class WGFMU_class():
 
     def _try_load_library(self, path):
         if path:
-            print(f"Trying to load WGFMU library from: {path}")
+            #print(f"Trying to load WGFMU library, path: {path}")
             try:
                 self._lib = ctypes.WinDLL(path)
                 self.library_path = path
