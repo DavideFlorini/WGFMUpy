@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='WGFMUpy',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        'WGFMUpy': ['libs/wgfmu.dll'],
+        'WGFMUpy': ['libs/*'],
     },
     author='Davide Florini',
     author_email='davideflorini92@gmail.com',
