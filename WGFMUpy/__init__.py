@@ -1,6 +1,5 @@
 import ctypes
 import numpy as np
-import pkg_resources
 import os
 
 

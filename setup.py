@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='WGFMUpy',
-    version='0.0.3a',
+    version='0.0.4',
     packages=find_packages(),
     include_package_data=True,
     package_data={
@@ -14,7 +14,8 @@ setup(
     url='https://github.com/DavideFlorini/WGFMUpy',
     install_requires=[
         # List any dependencies your package needs
-        'numpy>=1.20',
+        'numpy>=1.24',
+        'setuptools>=65.5',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
