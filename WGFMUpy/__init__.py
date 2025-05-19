@@ -6,27 +6,50 @@ import os
 
 class WGFMU_class():
     def __init__(self, library_path=None):
-        if library_path is None:
-            try:
-                self.library_path = pkg_resources.resource_filename('WGFMUpy', 'libs/wgfmu.dll')
-            except ImportError:
-                # pkg_resources might not be available in some environments
-                self.library_path = os.path.join(os.path.dirname(__file__), 'libs', 'wgfmu.dll')
-                print(f"Warning: pkg_resources not available, using relative path: {self.library_path}")
-            except FileNotFoundError:
-                raise FileNotFoundError("Default WGFMU library not found in the package.")
-        else:
-            self.library_path = library_path
+        self.library_path = None
+        self._lib = None
 
-        print(f"Attempting to load library from: {self.library_path}")
+        # 1. Try loading from the provided path (if any)
+        if library_path:
+            if self._try_load_library(library_path):
+                return
+
+        # 2. Try loading 'wgfmu.dll' directly (system's default search path)
+        if self._try_load_library('wgfmu.dll'):
+            return
+
+        # 3. Try loading from within the package
         try:
-            self._lib = ctypes.WinDLL(self.library_path)
-            self._define_argtypes_restypes()
-        except OSError as e:
-            self._lib = None
-            raise OSError(f"Error loading WGFMU library from {self.library_path}: {e}")
+            print(f"Warning: trying to load the WGFMU library from the python package: it may not actually work: INSTALL the WGFMU and visa library!!!!")
+            import pkg_resources
+            package_path = pkg_resources.resource_filename('WGFMUpy', 'libs/wgfmu.dll')
+            if self._try_load_library(package_path):
+                return
+        except (ImportError, FileNotFoundError):
+            print("WGFMU library not found within the package.")
+
+        # 4. Fallback to relative path
+        relative_path = os.path.join(os.path.dirname(__file__), 'libs', 'wgfmu.dll')
+        if self._try_load_library(relative_path):
+            print(f"Warning: Loaded WGFMU library using relative path: {relative_path}")
+            return
+
+        raise OSError("WGFMU library not found in the provided path, system's default path, package, or relative path.")
 
     # Functions
+
+    def _try_load_library(self, path):
+        if path:
+            print(f"Trying to load WGFMU library from: {path}")
+            try:
+                self._lib = ctypes.WinDLL(path)
+                self.library_path = path
+                self._define_argtypes_restypes()
+                print(f"Successfully loaded WGFMU library from: {self.library_path}")
+                return True
+            except OSError as e:
+                print(f"Error loading from {path}: {e}")
+        return False
 
     # Common - Initialize
 
