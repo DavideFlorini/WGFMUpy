@@ -20,7 +20,7 @@ class WGFMU_class():
 
         # 3. Try loading from within the package
         try:
-            print(f"Warning: trying to load the WGFMU library from the python package: it may not actually work: INSTALL the WGFMU and visa library!!!!")
+            print(f"Warning: trying to load the WGFMU library from the python package: it may not actually work: INSTALL the WGFMU and visa libraries!!!!")
             import pkg_resources
             package_path = pkg_resources.resource_filename('WGFMUpy', 'libs/wgfmu.dll')
             if self._try_load_library(package_path):
