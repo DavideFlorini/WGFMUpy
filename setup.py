@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='WGFMUpy',
-    version='0.0.3',
+    version='0.0.3a',
     packages=find_packages(),
     include_package_data=True,
     package_data={
